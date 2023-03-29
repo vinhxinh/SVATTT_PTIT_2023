@@ -126,10 +126,15 @@ if __name__ == "__main__":
 
      ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto2/pic3.jpg?raw=true)
      * Sau đó thay thế mỗi bản mã khác nhau còn lại thành 1 ký tự khác nhau sẽ được như sau
+     
      ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto2/pic4.jpg?raw=true)
+     
      * Sau đó thử ném nội dung flag lên _quipqiup_ thì cũng được kha khá kết quả
+    
      ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto2/pic5.jpg?raw=true)
+     
      * Phần 3 từ đầu có vẻ khớp với **'not_a_substitution'**
+    
      ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto2/pic6.jpg?raw=true)
   * Đến đây còn duy nhất 2 ký tự cuối trong cụm **"?I???"**. Đến đây thì thử các từ sao cho có nghĩa là được. 1 người biết tiếng Anh chắc chắn không mất nhiều lần để đoán ra đó là từ **"Cipher"** đâu nhỉ.
 
