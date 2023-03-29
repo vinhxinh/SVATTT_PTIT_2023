@@ -114,6 +114,7 @@ if __name__ == "__main__":
   * Tiếp đến là đoạn code mã hóa này không hề làm thay đổi thứ tự ký tự của bản rõ vì thế có thể giải mã bằng phương pháp phán đoán như này:
      * Trước tiên kiểm tra file cipher bằng cách sử dụng uniq và đã lọc ra được 32 bản mã khác nhau đại diện cho 32 ký tự được mã hóa **A-Z.,-_{ }** (tổng có 33 ký tự có thể 1 ký tự nào đó đã không được sử dụng)
      * Dựa vào form flag **ATTT{ABC_DEF}** kiểm tra vị trí từng bản mã và duy nhất **79baa5dd638b9dd358e0ebd73a2f04d5** xuất hiện liên tiếp 3 lần và từ đó lọc được bản mã của A{}
+
     ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto2/pic2.jpg?raw=true)
      * **79baa5dd638b9dd358e0ebd73a2f04d5 = T**
      * **c7a8b2b718344a552973e2194f54316e = A**
@@ -122,6 +123,7 @@ if __name__ == "__main__":
   * Tiếp tục mò ký tự _ vì là ký tự đặc biệt nên khả năng nó sẽ xuất hiện ít và khả năng xuất hiện bên ngoài form flag cũng rất ít
      * **7334d85f5c104c2b0f8318d371f94819 = _**
      * Vì nó xuất hiện chỉ 3 lần và đều nằm trong form flag
+
      ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto2/pic3.jpg?raw=true)
      * Sau đó thay thế mỗi bản mã khác nhau còn lại thành 1 ký tự khác nhau sẽ được như sau
      ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto2/pic4.jpg?raw=true)
