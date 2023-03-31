@@ -4,17 +4,17 @@
 
 | Title | Category | Flag |
 |---|---|---|
-| Pwn01 | Pwn | `ATTT{s3cur1tyy_@-@_t3h_ckUf}` |
-| Pwn02 | Pwn | `ATTT{Im4b4dboizwh0puShs33d1nU}` |
-| Re1 | RE | `ATTT{345y_m341}` |
-| Re2 | RE | `ATTT{BAINAYRATLADETOANG}` |
-| Re3 | RE | `ATTT{XachBaloLenVaDi}` |
-| Web1 | Web | `ATTT{3z_X2S_Fr0m_V@tv069_W1th_L0v3}` |
-| Web2 | Web | `ATTT{4_51mpl3_r3v_5ql}` |
-| Web1-Again | Web | `ATTT{4c3076335f56407476303639}` |
-| Crypto1 | Cryptography | `ATTT{Meow_meow_meow_meow_tra_lai_tam_tri_toi_day}` |
-| Crypto2 | Cryptography | `ATTT{NOT_A_SUBSTITUTION_CIPHER}` |
-| For1 | Forensics | `ATTT{https://www.youtube.com/watch?v=4qNALNWoGmI}` |
+| [Pwn01]() | Pwn | `ATTT{s3cur1tyy_@-@_t3h_ckUf}` |
+| [Pwn02]() | Pwn | `ATTT{Im4b4dboizwh0puShs33d1nU}` |
+| [Re1]() | RE | `ATTT{345y_m341}` |
+| [Re2]() | RE | `ATTT{BAINAYRATLADETOANG}` |
+| [Re3]() | RE | `ATTT{XachBaloLenVaDi}` |
+| [Web1](#Web-Web1) | Web | `ATTT{3z_X2S_Fr0m_V@tv069_W1th_L0v3}` |
+| [Web2](#Web-Web2) | Web | `ATTT{4_51mpl3_r3v_5ql}` |
+| [Web1-Again]() | Web | `ATTT{4c3076335f56407476303639}` |
+| [Crypto1](#Cryptography-Crypto1) | Cryptography | `ATTT{Meow_meow_meow_meow_tra_lai_tam_tri_toi_day}` |
+| [Crypto2](#Cryptography-Crypto2) | Cryptography | `ATTT{NOT_A_SUBSTITUTION_CIPHER}` |
+| [For1](#Forensics-For1) | Forensics | `ATTT{https://www.youtube.com/watch?v=4qNALNWoGmI}` |
 
 # Forensics: For1
 
@@ -37,7 +37,7 @@
 
 #### Challenge
 
-[enc.cpp](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto1/enc.cpp) -S
+[enc.cpp](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto1/enc.cpp) -
 [bases.txt](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto1/bases.txt)
 
 #### Solution
