@@ -4,8 +4,8 @@
 
 | Title | Category | Flag |
 |---|---|---|
-| [Pwn01](Pwn-Pwn01) | Pwn | `ATTT{s3cur1tyy_@-@_t3h_ckUf}` |
-| [Pwn02](Pwn-Pwn02) | Pwn | `ATTT{Im4b4dboizwh0puShs33d1nU}` |
+| [Pwn01](#Pwn-Pwn01) | Pwn | `ATTT{s3cur1tyy_@-@_t3h_ckUf}` |
+| [Pwn02](#Pwn-Pwn02) | Pwn | `ATTT{Im4b4dboizwh0puShs33d1nU}` |
 | [Re1](#RE-Re1) | RE | `ATTT{345y_m341}` |
 | [Re2](#RE-Re2) | RE | `ATTT{BAINAYRATLADETOANG}` |
 | [Re3](#RE-Re3) | RE | `ATTT{XachBaloLenVaDi}` |
