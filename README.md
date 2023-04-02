@@ -4,11 +4,11 @@
 
 | Title | Category | Flag |
 |---|---|---|
-| [Pwn01]() | Pwn | `ATTT{s3cur1tyy_@-@_t3h_ckUf}` |
-| [Pwn02]() | Pwn | `ATTT{Im4b4dboizwh0puShs33d1nU}` |
-| [Re1]() | RE | `ATTT{345y_m341}` |
-| [Re2]() | RE | `ATTT{BAINAYRATLADETOANG}` |
-| [Re3]() | RE | `ATTT{XachBaloLenVaDi}` |
+| [Pwn01](Pwn-Pwn01) | Pwn | `ATTT{s3cur1tyy_@-@_t3h_ckUf}` |
+| [Pwn02](Pwn-Pwn02) | Pwn | `ATTT{Im4b4dboizwh0puShs33d1nU}` |
+| [Re1](#RE-Re1) | RE | `ATTT{345y_m341}` |
+| [Re2](#RE-Re2) | RE | `ATTT{BAINAYRATLADETOANG}` |
+| [Re3](#RE-Re3) | RE | `ATTT{XachBaloLenVaDi}` |
 | [Web1](#Web-Web1) | Web | `ATTT{3z_X2S_Fr0m_V@tv069_W1th_L0v3}` |
 | [Web2](#Web-Web2) | Web | `ATTT{4_51mpl3_r3v_5ql}` |
 | [Web1-Again]() | Web | `ATTT{4c3076335f56407476303639}` |
